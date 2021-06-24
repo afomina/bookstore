@@ -1,31 +1,43 @@
 package andrianova.bookstore.domain.discount;
 
 import andrianova.bookstore.domain.Book;
+import andrianova.bookstore.domain.Price;
 
 public class BookCondition implements Condition<Book> {
 
-    private final BookProperty property;
-    private final ConditionImpl.Clause clause;
-    private final Property<Object> value;
+    public enum BookPropertyType {
+        NAME, YEAR, PRICE
+    }
 
-    public BookCondition(BookProperty property, ConditionImpl.Clause clause, Property<Object> value) {
+    private final BookPropertyType property;
+    private final Clause clause;
+    private final Object value;
+
+    public static BookCondition year(Clause clause, Integer value) {
+        return new BookCondition(BookPropertyType.YEAR, clause, value);
+    }
+
+    private BookCondition(BookPropertyType property,
+                          Clause clause,
+                          Object value) {
         this.property = property;
         this.clause = clause;
         this.value = value;
     }
 
-    public enum BookProperty {
-        NAME, YEAR, PRICE
-    }
-
     @Override
     public boolean applies(Book book) {
-        Object object = null;
         switch (property) {
-            case YEAR -> object = book.getPublishYear();
-            case NAME -> object = book.getName();
-            case PRICE -> object = book.getPrice();
+            case YEAR -> {
+                return new ConditionImpl<>(clause, (Integer) value).applies(book.getPublishYear());
+            }
+            case NAME -> {
+                return new ConditionImpl<>(clause, (String) value).applies(book.getName());
+            }
+            case PRICE -> {
+                return new ConditionImpl<>(clause, (Price) value).applies(book.getPrice());
+            }
         }
-        return new ConditionImpl<>(clause, value).applies(object);
+        return false;
     }
 }
