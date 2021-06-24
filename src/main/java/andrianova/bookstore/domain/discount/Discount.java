@@ -1,11 +1,9 @@
 package andrianova.bookstore.domain.discount;
 
-import andrianova.bookstore.domain.Product;
-
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Discount<T extends Product> {
+public class Discount<T> {
 
     private final List<Condition<T>> conditions;
     private final BigDecimal multiplier;

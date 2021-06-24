@@ -2,7 +2,6 @@ package andrianova.bookstore.service.impl;
 
 import andrianova.bookstore.domain.Book;
 import andrianova.bookstore.domain.Price;
-import andrianova.bookstore.domain.Product;
 import andrianova.bookstore.domain.discount.BookCondition;
 import andrianova.bookstore.domain.discount.ConditionImpl;
 import andrianova.bookstore.domain.discount.Discount;
@@ -27,10 +26,10 @@ public class DiscountServiceImpl implements DiscountService {
 	}
 
 	@Override
-	public List<Discount<Product>> getPriceDiscounts() {
+	public List<Discount<Price>> getPriceDiscounts() {
 		return Collections.singletonList(new Discount<>(
 				Collections.singletonList(
-						new ConditionImpl<>(MORE, new Product(Price.of(BigDecimal.valueOf(30.0))))
+						new ConditionImpl<>(MORE, Price.of(BigDecimal.valueOf(30.0)))
 				),
 				BigDecimal.valueOf(0.95))
 		);

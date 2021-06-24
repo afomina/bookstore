@@ -7,6 +7,7 @@
     <groupId>andrianova</groupId>
     <artifactId>bookstore</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <plugin>
@@ -15,6 +16,16 @@
                 <configuration>
                     <source>15</source>
                     <target>15</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
