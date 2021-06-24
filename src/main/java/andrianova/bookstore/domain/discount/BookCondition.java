@@ -26,16 +26,16 @@ public class BookCondition implements Condition<Book> {
     }
 
     @Override
-    public boolean applies(Book book) {
+    public boolean check(Book book) {
         switch (property) {
             case YEAR -> {
-                return new ConditionImpl<>(clause, (Integer) value).applies(book.getPublishYear());
+                return new ComparingCondition<>(clause, (Integer) value).check(book.getPublishYear());
             }
             case NAME -> {
-                return new ConditionImpl<>(clause, (String) value).applies(book.getName());
+                return new ComparingCondition<>(clause, (String) value).check(book.getName());
             }
             case PRICE -> {
-                return new ConditionImpl<>(clause, (Price) value).applies(book.getPrice());
+                return new ComparingCondition<>(clause, (Price) value).check(book.getPrice());
             }
         }
         return false;
