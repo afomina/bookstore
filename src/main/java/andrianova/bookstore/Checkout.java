@@ -1,6 +1,11 @@
 package andrianova.bookstore;
 
 import andrianova.bookstore.domain.Book;
+import andrianova.bookstore.domain.Price;
+import andrianova.bookstore.domain.Product;
+import andrianova.bookstore.domain.discount.Discount;
+import andrianova.bookstore.service.DiscountService;
+import andrianova.bookstore.service.impl.DiscountServiceImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,18 +13,27 @@ import java.util.List;
 
 public class Checkout {
 
-    public static Double checkoutSum(List<Book> books) {
-        Double sum = 0.0;
+    private final DiscountService discountService = new DiscountServiceImpl();
+
+    public Double checkoutSum(List<Book> books) {
+        List<Discount<Book>> bookDiscounts = discountService.getBookDiscounts();
+        BigDecimal sum = BigDecimal.ZERO;
         for (Book book : books) {
-            if (book.getPublishYear() > 2000) {
-                sum += book.getPrice() * 0.9;
-            } else {
-                sum += book.getPrice();
+            BigDecimal price = book.getPrice().getValue();
+            for (Discount<Book> discount : bookDiscounts) {
+                if (discount.applies(book)) {
+                    price = price.multiply(discount.getMultiplier());
+                }
+            }
+            sum = sum.add(price);
+        }
+
+        List<Discount<Product>> discounts = discountService.getPriceDiscounts();
+        for (Discount<Product> discount : discounts) {
+            if (discount.applies(new Product(Price.of(sum)))) {
+                sum = sum.multiply(discount.getMultiplier());
             }
         }
-        if (sum > 30.0) {
-            sum *= 0.95;
-        }
-        return new BigDecimal(sum).setScale(2, RoundingMode.FLOOR).doubleValue();
+        return sum.setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 }

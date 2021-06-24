@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class CheckoutTest {
 
     private BookService bookService = new BookServiceImpl();
+	private Checkout checkout = new Checkout();
 
     @Test
     public void checkoutTest1() {
@@ -20,7 +21,7 @@ public class CheckoutTest {
                 bookService.findByName("The Terrible Privacy of Maxwell Sim").orElseThrow(),
                 bookService.findByName("Three Men in a Boat").orElseThrow()
         );
-        assertEquals(Checkout.checkoutSum(books), Double.valueOf(24.69));
+		assertEquals(checkout.checkoutSum(books), Double.valueOf(24.69));
     }
 
     @Test
@@ -30,7 +31,7 @@ public class CheckoutTest {
                 bookService.findByName("Three Men in a Boat").orElseThrow(),
                 bookService.findByName("Great Expectations").orElseThrow()
         );
-        assertEquals(Checkout.checkoutSum(books), Double.valueOf(35.27));
+		assertEquals(checkout.checkoutSum(books), Double.valueOf(35.27));
     }
 
     @Test
@@ -40,6 +41,6 @@ public class CheckoutTest {
                 bookService.findByName("Three Men in a Boat").orElseThrow(),
                 bookService.findByName("Great Expectations").orElseThrow()
         );
-        assertEquals(Checkout.checkoutSum(books), Double.valueOf(36.01));
+		assertEquals(checkout.checkoutSum(books), Double.valueOf(36.01));
     }
 }

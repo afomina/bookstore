@@ -1,14 +1,16 @@
 package andrianova.bookstore.domain;
 
-public class Book {
+import java.math.BigDecimal;
+
+public class Book extends Product {
+
     private final String name;
     private final Integer publishYear;
-    private final Double price;
 
     public Book(String name, Integer publishYear, Double price) {
+        super(Price.of(BigDecimal.valueOf(price)));
         this.name = name;
         this.publishYear = publishYear;
-        this.price = price;
     }
 
     public String getName() {
@@ -19,16 +21,4 @@ public class Book {
         return publishYear;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "name='" + name + '\'' +
-                ", publishYear=" + publishYear +
-                ", price=" + price +
-                '}';
-    }
 }
